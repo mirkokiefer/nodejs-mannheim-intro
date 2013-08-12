@@ -4,34 +4,22 @@
 <meta charset="utf-8">
 <title>Intro</title>
   <link rel="stylesheet" href="/deps/bootstrap/css/bootstrap.css">
-  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <script id="todo-template" type="text/x-handlebars">
-    <li class="todo">
-      {{#if isEditing}}
-        <input class="input-title" type="text" value="{{title}}">
-        <button class="btn save">Save</button>
-      {{else}}
-        <input class="done" type="checkbox"
-          {{#if isDone}}
-            checked="checked"
-          {{/if}}>
-        <a class="title" href="#">{{title}}</a>
-      {{/if}}
-    </li>
-  </script>
-
-  <script id="todos-template" type="text/x-handlebars">
-    <ul class="todo-list"></ul>
-    <button class="btn add-todo">Add Todo</button>
+    <a href="#" class="title">{{title}}</a>
   </script>
 
   <div class="container">
     <div class="page-header">
       <h1>Todo App</h1>
     </div>
-    <div id="todos"></div>
+    <div id="master">
+      <ul id="todos"></ul>
+    </div>
+    <div id="details">
+      
+    </div>
   </div>
   <script src="/deps/jquery/jquery-1.9.1.js"></script>
   <script src="/deps/handlebars/handlebars-1.0.0-rc.3.js"></script>

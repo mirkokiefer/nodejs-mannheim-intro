@@ -1,84 +1,38 @@
 
-var initialTodos = [
-  {title: 'Go to Node.js Meetup', isDone: true},
-  {title: 'Learn to node', isDone: false},
-  {title: 'Write a cool app', isDone: false}
-]
+var start = function() {
+  var model = require('./model')
+  var views = require('./views')
 
-var model = {}
-model.Todo = Backbone.Model.extend({})
+  var MyRouter = Backbone.Router.extend({
+    routes: {
+      'app/details/:id': 'details'
+    },
+    details: function(id) {
+      var newDetailView = new views.DetailView().render()
+      $('#details').html(newDetailView.$el)
+    }
+  })
 
-model.Todos = Backbone.Collection.extend({
-  model: model.Todo
-})
+  var initialize = function() {
+    var initialTasks = [
+      {id: 1, title: 'Go to Node.js Meetup'},
+      {id: 2, title: 'Code some Backbone'}
+    ]
 
-var allTodos = new model.Todos(initialTodos)
+    var allTasks = new model.Tasks(initialTasks)
 
-var views = {}
+    var router = new MyRouter()
+    Backbone.history.start({pushState: true, silent: false})
 
-views.TodoItem = Backbone.View.extend({
-  initialize: function() {
-    this.listenTo(this.model, "change", this.render)
-    var source = $("#todo-template").html()
-    this.template = Handlebars.compile(source)
-  },
-  events: {
-    'click .done': 'doneClicked',
-    'click .title': 'edit',
-    'click .save': 'save'
-  },
-  doneClicked: function() {
-    var isDone = this.$('.done').is(":checked")
-    this.model.set('isDone', isDone)
-  },
-  edit: function() {
-    this.isEditing = true
-    this.render()
-  },
-  save: function() {
-    this.isEditing = false
-    var newTitle = this.$('.input-title').val()
-    this.model.set('title', newTitle)
-    this.render()
-  },
-  render: function() {
-    var data = this.model.toJSON()
-    data.isEditing = this.isEditing
-    this.$el.html(this.template(data))
-    return this
+    var singleTaskView = new views.TaskView({model: allTasks.at(0)})
+
+    singleTaskView.render()
+
+    $('#todos').html(singleTaskView.$el)
   }
-})
 
-views.Todos = Backbone.View.extend({
-  initialize: function() {
-    this.listenTo(this.collection, "change", this.render)
-    this.listenTo(this.collection, "add", this.render)
-    var source = $("#todos-template").html()
-    this.template = Handlebars.compile(source)
-  },
-  events: {
-    'click .add-todo': 'addTodo'
-  },
-  addTodo: function() {
-    allTodos.add({title: 'Enter title'})
-    //this.render()
-  },
-  render: function() {
-    this.$el.html(this.template())
+  initialize()
+}
 
-    var childViews = this.collection.map(function(each) {
-      return new views.TodoItem({model: each})
-    })
+$(start)
 
-    var el = this.$('.todo-list')
-    el.empty()
-    childViews.forEach(function(each) {
-      el.append(each.render().el)
-    })
-    return this
-  }
-})
-
-var todosView = new views.Todos({collection: allTodos})
-
-$('#todos').html(todosView.render().el)
