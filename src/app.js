@@ -19,7 +19,7 @@ var views = {}
 views.TodoItem = Backbone.View.extend({
   initialize: function() {
     this.listenTo(this.model, "change", this.render)
-    var source   = $("#todo-template").html()
+    var source = $("#todo-template").html()
     this.template = Handlebars.compile(source)
   },
   events: {
@@ -39,6 +39,7 @@ views.TodoItem = Backbone.View.extend({
     this.isEditing = false
     var newTitle = this.$('.input-title').val()
     this.model.set('title', newTitle)
+    this.render()
   },
   render: function() {
     var data = this.model.toJSON()
@@ -52,7 +53,7 @@ views.Todos = Backbone.View.extend({
   initialize: function() {
     this.listenTo(this.collection, "change", this.render)
     this.listenTo(this.collection, "add", this.render)
-    var source   = $("#todos-template").html()
+    var source = $("#todos-template").html()
     this.template = Handlebars.compile(source)
   },
   events: {
@@ -60,9 +61,11 @@ views.Todos = Backbone.View.extend({
   },
   addTodo: function() {
     allTodos.add({title: 'Enter title'})
+    //this.render()
   },
   render: function() {
     this.$el.html(this.template())
+
     var childViews = this.collection.map(function(each) {
       return new views.TodoItem({model: each})
     })
