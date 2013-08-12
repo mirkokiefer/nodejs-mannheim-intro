@@ -23,14 +23,27 @@ views.TodoItem = Backbone.View.extend({
     this.template = Handlebars.compile(source)
   },
   events: {
-    'click .done': 'doneClicked'
+    'click .done': 'doneClicked',
+    'click .title': 'edit',
+    'click .save': 'save'
   },
   doneClicked: function() {
     var isDone = this.$('.done').is(":checked")
     this.model.set('isDone', isDone)
   },
+  edit: function() {
+    this.isEditing = true
+    this.render()
+  },
+  save: function() {
+    this.isEditing = false
+    var newTitle = this.$('.input-title').val()
+    this.model.set('title', newTitle)
+  },
   render: function() {
-    this.$el.html(this.template(this.model.toJSON()))
+    var data = this.model.toJSON()
+    data.isEditing = this.isEditing
+    this.$el.html(this.template(data))
     return this
   }
 })
