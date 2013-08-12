@@ -9,7 +9,10 @@
 <body>
   <script id="todo-template" type="text/x-handlebars">
     <li class="todo">
-      <input class="done" type="checkbox" />
+      <input class="done" type="checkbox"
+        {{#if isDone}}
+          checked="checked"
+        {{/if}}>
       <a href="#">{{title}}</a>
     </li>
   </script>

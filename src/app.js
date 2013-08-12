@@ -22,6 +22,13 @@ views.TodoItem = Backbone.View.extend({
     var source   = $("#todo-template").html()
     this.template = Handlebars.compile(source)
   },
+  events: {
+    'click .done': 'doneClicked'
+  },
+  doneClicked: function() {
+    var isDone = this.$('.done').is(":checked")
+    this.model.set('isDone', isDone)
+  },
   render: function() {
     this.$el.html(this.template(this.model.toJSON()))
     return this
