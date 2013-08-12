@@ -10,8 +10,8 @@
   <script id="todo-template" type="text/x-handlebars">
     <li class="todo">
       {{#if isEditing}}
-        <input class="input-title" type="text" value="test">
-        <button class="btn save">Add Todo</button>
+        <input class="input-title" type="text" value="{{title}}">
+        <button class="btn save">Save</button>
       {{else}}
         <input class="done" type="checkbox"
           {{#if isDone}}
@@ -24,6 +24,7 @@
 
   <script id="todos-template" type="text/x-handlebars">
     <ul class="todo-list"></ul>
+    <button class="btn add-todo">Add Todo</button>
   </script>
 
   <div class="container">

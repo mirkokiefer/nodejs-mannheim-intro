@@ -51,8 +51,15 @@ views.TodoItem = Backbone.View.extend({
 views.Todos = Backbone.View.extend({
   initialize: function() {
     this.listenTo(this.collection, "change", this.render)
+    this.listenTo(this.collection, "add", this.render)
     var source   = $("#todos-template").html()
     this.template = Handlebars.compile(source)
+  },
+  events: {
+    'click .add-todo': 'addTodo'
+  },
+  addTodo: function() {
+    allTodos.add({title: 'Enter title'})
   },
   render: function() {
     this.$el.html(this.template())
